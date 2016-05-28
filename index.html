@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <style>
+        #result {
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        #imageHolder {
+            width: 500px;
+            height: 350px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>File Upload:</h2> Select a file to upload:
+    <br /></br>
+    <form id="myform" action="/file_upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="Image" size="50" required/>
+        <input id="submitButton" type="submit" value="Upload File" />
+    </form>
+    <hr> Result:
+    <div id="result">
+
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.js"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            $("#myform").submit(function(event) {
+                event.preventDefault();
+
+                // Get some values from elements on the page:
+                var $form = $(this);
+
+                var formData = new FormData(this),
+                    url = $form.attr("action");
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        console.log("success");
+                        $("#result").html(data);
+                    },
+                    error: function(data) {
+                        console.log("error");
+                        console.log(data);
+                    },
+                    beforeSend: function() {
+                        $('#result').html("Uploading....");
+                    },
+                    complete: function() {
+
+                    }
+                });
+
+            });
+        });
+    </script>
+</body>
+
+</html>
